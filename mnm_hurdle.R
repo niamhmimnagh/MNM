@@ -124,36 +124,35 @@ model {
   }
 ', file={model_code <- tempfile()})
   
-  # Initial Values
-  jags.inits<-array(dim=c(R,S,4))
-  jags.inits<-apply(Y, c(1,3), max)+1
-  x1<-apply(Y, c(1,3),function(z) ifelse(any(z)>0, 1, 0))
+  # Initial values for count need to be greater than Y
+  count.inits<-apply(Y, c(1,3), max)+1
+  # Initial values for x need x=1 if y>0
+  x.inits<-apply(Y, c(1,3),function(z) ifelse(any(z)>0, 1, 0))
   
   initfunction <- function(chain) {
     return(switch(chain,
-                  "1" = list("count"=jags.inits,
-                             "x"=x1,
+                  "1" = list("count"=count.inits,
+                             "x"=x.inits,
                              .RNG.name = "base::Super-Duper",
                              .RNG.seed = 1),
-                  "2" = list("count"=jags.inits,                               
-                             "x"=x1,
+                  "2" = list("count"=count.inits,                               
+                             "x"=x.inits,
                              .RNG.name = "base::Super-Duper",
                              .RNG.seed = 2),
-                  "3" = list("count"=jags.inits,
-                             "x"=x1,
+                  "3" = list("count"=count.inits,
+                             "x"=x.inits,
                              .RNG.name = "base::Super-Duper",
                              .RNG.seed = 3),
-                  "4" = list("count"=jags.inits,
-                             "x"=x1,
+                  "4" = list("count"=count.inits,
+                             "x"=x.inits,
                              .RNG.name = "base::Super-Duper",
                              .RNG.seed = 4)))
   }
   model_parameters =  c("alpha", "cor", "sigma", "N", "probability", "theta")
-  model_data = list("R" = R, "Y"=Y, "T"=T, "S"=S, "Omega"=diag(S), "jags.inits"=jags.inits, "x1"=x1)
+  model_data = list("R" = R, "Y"=Y, "T"=T, "S"=S, "Omega"=diag(S), "count.inits"=count.inits, "x.inits"=x.inits)
   model_run=NULL
   # Run the model
   list2env(model_data , envir=globalenv())
-  
   model_run =jags.parallel(data = names(model_data),
                            inits=initfunction,
                            parameters.to.save = model_parameters,
@@ -238,7 +237,3 @@ zeros<-"small"
 combinations<-expand.grid("R"=R,"T"=T,"S"=S,"probability"=prob, "abundance"=abundance, "zeros"=zeros)
 ncombinations<-dim(combinations)[1]
 x<-mnm_hurdle(ndatasets=ndatasets, ncombinations=ncombinations, combinations=combinations)
-
-
-
-
