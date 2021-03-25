@@ -111,23 +111,15 @@ for(s in 1:S){
   initfunction <- function(chain) {
     return(switch(chain,
                   "1" = list("N"=count.inits,
-                             "gamma"=rnorm(S),
-                             "alpha"=rnorm(1)
                              .RNG.name = "base::Super-Duper",
                              .RNG.seed = 1),
                   "2" = list("N"=count.inits,  
-                             "gamma"=rnorm(S),
-                             "alpha"=rnorm(1),
                              .RNG.name = "base::Super-Duper",
                              .RNG.seed = 2),
                   "3" = list("N"=count.inits,
-                             "gamma"=rnorm(S),
-                             "alpha"=rnorm(1),
                              .RNG.name = "base::Super-Duper",
                              .RNG.seed = 3),
                   "4" = list("N"=count.inits,
-                             "gamma"=rnorm(S),
-                             "alpha"=rnorm(1),
                              .RNG.name = "base::Super-Duper",
                              .RNG.seed = 4)))
   }
