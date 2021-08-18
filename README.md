@@ -1,5 +1,6 @@
 ## MNM Models - Bayesian Multi-Species N-Mixture Models for Unmarked Animal Communities
 
+
 ### Simulation Studies Files
 The following files contain code which was used in the simulation studies, to assess the estimation of parameters in the MNM models.
 * mnm.R - simulate data for, and fit the MNM model,
@@ -19,4 +20,5 @@ The following files all pertain to the model, fitted to the North American Breed
 
 * detection_probability_plots.Rmd can be used in conjunction with p.RData and sites.RData to generate a html file, which contains the detection probability of each species at each site.
 
-
+### Analytic Correlation Files
+* analytic_correlations.R contains R code used to implement the analytic correlations in R.
