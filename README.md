@@ -1,2 +1,4 @@
 # MNM
-MNM Models - Simulate data and fit models in JAGS
+MNM Models - Bayesian Multi-Species N-Mixture Models for Unmarked Animal Communities
+
+
