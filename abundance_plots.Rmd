@@ -1,0 +1,124 @@
+---
+title: "Bayesian Multi-Species N-Mixture Models for Unmarked Animal Communities"
+
+author:
+  - Niamh Mimnagh^1^, Andrew Parnell^1^, Estevão Prado^1^, Rafael de Andrade Moral^2^
+  - ^1^Hamilton Institute, Maynooth University, Maynooth, Co. Kildare, Ireland
+  - ^2^Department of Mathematics and Statistics, Maynooth University, Maynooth, Co. Kildare, Ireland
+output:
+  html_notebook: default
+---
+
+<style type="text/css">
+
+h1.title {
+  text-align: center;
+}
+h4.author { /* Header 4 - and the author and data headers use this too  */
+    font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  text-align: center;
+}
+
+h1, h2, h3 {
+  text-align: center;
+}
+</style>
+
+### Abundance Plots {.tabset}
+
+The following document presents plots of the abundance of each species, per site, per year.
+
+```{r, echo=F}
+# Loading data and generating plots
+library(rnaturalearth)
+library(dplyr)
+library(ggplot2)
+library(viridis)
+library(ggpubr)
+
+load("~/nabbs_models/covariates/sites.RData")
+load("~/nabbs_models/covariates/N.RData")
+species<-c("Bald_Eagle" , "Canada_Goose","Hammonds_Flycatcher","Red_breasted_Sapsucker","Stellers_Jay","Swainsons_Thrush","Tree_Swallow" ,"Trumpeter_Swan","Varied_Thrush","Wilsons_Snipe" )
+
+Nlist<-vector(mode="list", length=10)
+for(s in 1:10){
+  Nlist[[s]]<-cbind(N[,s,],sites)
+  colnames(Nlist[[s]])<-c(paste(species[s], "2010", sep="_"),paste(species[s], "2011", sep="_"),paste(species[s], "2012", sep="_"), paste(species[s], "2013", sep="_"),paste(species[s], "2014", sep="_"),paste(species[s], "2015", sep="_"), paste(species[s], "2016", sep="_"),paste(species[s], "2017", sep="_"),paste(species[s], "2018", sep="_"), paste(species[s], "2019", sep="_"), "latitude", "longitude")
+  
+}
+names(Nlist)<-species
+
+
+
+# Function to produce plot of abundance per species per site
+map <- ne_states(country = c('United States of America', 'Canada'), returnclass = 'sf')
+
+x<-vector(mode="list", length=10)
+for(s in 1:10){
+  colNames<-colnames(Nlist[[s]][,1:10])
+  dat<-Nlist[[s]]
+  for(i in colNames){
+    x[[s]][[i]]<- map %>%
+      ggplot(aes(x=longitude, y=latitude))+
+      geom_sf(colour = "black", fill = "white", size = 0.2)+
+      coord_sf(xlim = c(-168, -131), ylim = c(54, 70), expand = FALSE) +  labs(x = "Longitude", y = "Latitude")+
+      geom_point(data=dat, aes_string(color=i), size=6, alpha=0.5)+
+      theme(panel.grid.major = element_line(color = gray(.5), linetype = "dashed", size = 0.5), panel.background = element_rect(fill = "cadetblue3"))+
+      scale_color_gradient(limits=c(0,max(dat[,1:10])),low="blue", high="red", name="Abundance")+ggtitle(i)+theme(plot.title = element_text(hjust = 0.5))
+  }
+}
+```
+
+
+
+#### Bald Eagle
+```{r, fig.width=16, fig.height=50, echo=F}
+ggarrange(plotlist=x[[1]], ncol=2, nrow=5, legend="bottom")
+```
+
+#### Canada Goose
+```{r, fig.width=16, fig.height=50, echo=F}
+ggarrange(plotlist=x[[2]], ncol=2, nrow=5, legend="bottom")
+```
+
+#### Hammond's Flycatcher
+```{r, fig.width=16, fig.height=50, echo=F}
+ggarrange(plotlist=x[[3]], ncol=2, nrow=5, legend="bottom")
+```
+
+#### Red-breasted Sapsucker
+```{r, fig.width=16, fig.height=50, echo=F}
+ggarrange(plotlist=x[[4]], ncol=2, nrow=5, legend="bottom")
+```
+
+#### Steller's Jay
+```{r, fig.width=16, fig.height=50, echo=F}
+ggarrange(plotlist=x[[5]], ncol=2, nrow=5, legend="bottom")
+```
+
+#### Swainson's Thrush
+```{r, fig.width=16, fig.height=50, echo=F}
+ggarrange(plotlist=x[[6]], ncol=2, nrow=5, legend="bottom")
+```
+
+#### Tree Swallow
+```{r, fig.width=16, fig.height=50, echo=F}
+ggarrange(plotlist=x[[7]], ncol=2, nrow=5, legend="bottom")
+```
+
+#### Trumpeter Swan
+```{r, fig.width=16, fig.height=50, echo=F}
+ggarrange(plotlist=x[[8]], ncol=2, nrow=5, legend="bottom")
+```
+
+#### Varied Thrush
+```{r, fig.width=16, fig.height=50, echo=F}
+ggarrange(plotlist=x[[9]], ncol=2, nrow=5, legend="bottom")
+```
+
+
+#### Wilson's Snipe
+```{r, fig.width=16, fig.height=50, echo=F}
+ggarrange(plotlist=x[[10]], ncol=2, nrow=5, legend="bottom")
+```
