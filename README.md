@@ -21,4 +21,4 @@ The following files all pertain to the model, fitted to the North American Breed
 * detection_probability_plots.Rmd can be used in conjunction with p.RData and sites.RData to generate a html file, which contains the detection probability of each species at each site.
 
 ### Analytic Correlation Files
-* analytic_correlations.R contains R code used to implement the analytic correlations in R.
+* analytic_correlations.R contains R code used to implement the analytic correlations from an R2jags model in R.
