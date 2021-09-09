@@ -171,7 +171,7 @@ analyticCorrelationARHurdle<-function(theta,mu_a, mu_phi, var_phi, covariance_ma
     for(s in 1:S){
       mu_AR[i,s,1]<-mu_a[s]
       for(k in 2:K){
-        mu_AR[i,s,k]<-mu_a[s]++log(N[i,s,k-1]+1)*mu_phi[s] 
+        mu_AR[i,s,k]<-mu_a[s]+log(N[i,s,k-1]+1)*mu_phi[s] 
       }
     }
   }
